@@ -33,6 +33,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             whoami
+            echo "${{ vars.VM_IPV4_ADDRESS }}"
             
       - name: set up docker
         uses: docker/setup-docker-action@v4
