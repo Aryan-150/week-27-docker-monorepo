@@ -33,8 +33,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             whoami
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
             if [ "$(docker ps -a -q -f name=user_todo_app)" ]; then
-              sudo docker rm -f user_todo_app
+              docker rm -f user_todo_app
             fi
-            sudo docker run -d --name user_todo_app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            docker run -d --name user_todo_app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
