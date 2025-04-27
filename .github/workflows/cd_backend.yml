@@ -28,7 +28,7 @@ jobs:
       - name: ssh into vm and deploy the docker image for backend
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ vars.VM_IPV4_ADDRESS }}
+          host: 15.206.209.17
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
