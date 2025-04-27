@@ -1,0 +1,13 @@
+name: deploying backend docker image ot dockerhub and vm
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_the_docker_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build_the_image
+        run: |
+          docker build -t docker-backend .
