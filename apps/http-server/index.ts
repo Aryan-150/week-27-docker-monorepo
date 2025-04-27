@@ -1,8 +1,9 @@
 import express from "express";
+import cors from "cors";
 import { client } from "@repo/db/client";
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.get("/users", (req, res) => {
