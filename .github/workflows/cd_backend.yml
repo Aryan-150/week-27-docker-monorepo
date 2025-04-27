@@ -23,5 +23,22 @@ jobs:
           context: .
           file: ./docker/Dockerfile.backend
           push: true
-          tags: aryanbachchu/todo-application:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
 
+      - name: ssh into vm and deploy the docker image for backend
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.VM_IPV4_ADDRESS }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            whoami
+            
+      - name: set up docker
+        uses: docker/setup-docker-action@v4
+
+      - run : |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            docker stop user_todo_app
+            docker rm user_todo_app
+            docker run -d --name user_todo_app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
