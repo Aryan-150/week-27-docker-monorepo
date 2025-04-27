@@ -35,7 +35,6 @@ jobs:
             whoami
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
             if [ "$(docker ps -a -q -f name=user_todo_app)" ]; then
-              sudo docker stop user_todo_app
-              sudo docker rm user_todo_app
+              sudo docker rm -f user_todo_app
             fi
             sudo docker run -d --name user_todo_app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
