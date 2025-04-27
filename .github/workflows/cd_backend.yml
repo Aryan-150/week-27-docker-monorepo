@@ -33,14 +33,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             whoami
-            echo "hello vm"
-            echo "${{ vars.VM_IPV4_ADDRESS }}"
-            echo "${{ secrets.VM_HOST }}"
-            
-      - name: set up docker
-        uses: docker/setup-docker-action@v4
-
-      - run : |
             docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
             if [ "$(docker ps -a -q -f name=user_todo_app)" ]; then
               docker stop user_todo_app
