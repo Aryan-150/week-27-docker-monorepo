@@ -42,4 +42,4 @@ jobs:
               docker run -d --name postgres -e POSTGRES_PASSWORD=mysecretpassword --network todo_network -p 5432:5432 postgres
             fi
             docker run -d --name user_todo_app -e DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/todo_db --network todo_network -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
-            docker image prune -all -force
+            docker image prune --all --force
