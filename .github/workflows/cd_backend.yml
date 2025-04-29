@@ -34,7 +34,12 @@ jobs:
           script: |
             whoami
             docker pull ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            docker network create todo_network
             if [ "$(docker ps -a -q -f name=user_todo_app)" ]; then
               docker rm -f user_todo_app
             fi
-            docker run -d --name user_todo_app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            if [ -z "$(docker ps -q -f name=postgres)" ]; then
+              docker run -d --name postgres -e POSTGRES_PASSWORD=mysecretpassword --network todo_network -p 5432:5432 postgres
+            fi
+            docker run -d --name user_todo_app -e DATABASE_URL=postgresql://postgres:mysecretpassword@postgres:5432/todo_db --network todo_network -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/todo-application:${{ github.sha }}
+            docker image prune -all -force
